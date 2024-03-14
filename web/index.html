@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prueba CORS</title>
+  <style>
+    main {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    article {
+      border: 1px solid #ccc;
+      padding: 1rem;
+      text-align: center;
+    }
+    img {
+      width: 100%;
+      height: auto;
+    }
+  </style>
+  <script type="module">
+    fetch('http://localhost:1234/movies')
+      .then(response => response.json())
+      .then(movies => {
+        const html = movies.map(movie => {
+          return `
+            <article data-id="${movie.id}" >
+              <h2>${movie.title}</h2>
+              <img src="${movie.poster}" alt="${movie.title}">
+              <p>${movie.director}</p>
+              <button>Delete</button>
+            </article>
+
+          `
+        }).join('')
+        document.querySelector('main').innerHTML = html        
+        document.addEventListener('click', event => {
+          if (event.target.matches('button')) {
+            const article = event.target.closest('article')
+            console.log(article.dataset)
+            const id = article.dataset.id
+            fetch(`http://localhost:1234/movies/${id}`, {
+              method: 'DELETE'
+            })
+              .then(response => {
+                console.log(response)
+                if(response.ok){
+                  article.remove()
+                }
+              })
+              .catch(error => console.log("este error", error))
+          }
+        })
+      })
+      .catch(error => console.log(error));
+  </script>
+</head>
+
+<body>
+  <main></main>
+</body>
+</html>

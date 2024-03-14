@@ -1,0 +1,39 @@
+### all movies
+GET http://localhost:1234/movies
+
+### single movie
+GET http://localhost:1234/movies/6a360a18-c645-4b47-9a7b-2a71babbf3e0
+
+### Search by genre
+GET http://localhost:1234/movies?genre=Action
+
+### New movie
+
+POST http://localhost:1234/movies
+Content-Type: application/json
+
+{
+    "sql": "SELECT * FROM user;",
+    "title": "The Marvels",
+    "year": 2023,
+    "director": "Nia DaCosta",
+    "duration": 105,
+    "poster": "https://m.media-amazon.com/images/M/MV5BM2U2YWU5NWMtOGI2Ni00MGMwLWFkNjItMjgyZWMxNjllNTMzXkEyXkFqcGdeQXVyMDM2NDM2MQ@@._V1_QL75_UX190_CR0,0,190,281_.jpg",
+    "genre": [
+        "Action",
+        "Adventure",
+        "Sci-Fi"
+    ],
+    "rate": 7.3
+}
+
+### Update movie
+PATCH http://localhost:1234/movies/6a360a18-c645-4b47-9a7b-2a71babbf3e0
+Content-Type: application/json
+
+{
+    "year": 2000,
+    "title": "The Avatar",
+    "duration": 120
+}
+
